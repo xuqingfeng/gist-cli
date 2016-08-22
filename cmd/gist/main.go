@@ -11,7 +11,7 @@ import (
 func main() {
 
 	// flag has high priority than ENV value
-	public := flag.Bool("p", false, "make gist public [false] or secret [true] - default secret")
+	public := flag.Bool("p", false, "make gist public (false) or secret (true) - default secret")
 	username := flag.String("u", "", "username")
 	token := flag.String("t", "", "token for gist (https://github.com/settings/tokens)")
 	description := flag.String("d", "", "description")

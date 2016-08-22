@@ -45,7 +45,7 @@ var (
 	ErrNoFiles    = errors.New("no file provided")
 )
 
-// Paste upload files to github
+// Paste is used to upload files to gist.github.com
 // upload empty files will return error
 func Paste(public bool, username, token, description, proxyCfg string, flagArgs []string) error {
 
@@ -95,6 +95,7 @@ func Paste(public bool, username, token, description, proxyCfg string, flagArgs 
 		}
 		transport := &http.Transport{Dial: dialer.Dial}
 		defaultClient.Transport = transport
+		log.Printf("I! using proxy: %s\n", proxyCfg)
 	}
 
 	req, err := http.NewRequest("POST", GIST_API_URL, reader)
