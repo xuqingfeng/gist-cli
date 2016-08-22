@@ -30,6 +30,10 @@ type Ret struct {
 	Public      bool   `json:"public"`
 }
 
+type ErrRet struct {
+	Message string `json:"message"`
+}
+
 const (
 	GIST_API_URL = "https://api.github.com/gists"
 
@@ -109,16 +113,24 @@ func Paste(public bool, username, token, description, proxyCfg string, flagArgs 
 	}
 	defer resp.Body.Close()
 
-	ret := new(Ret)
-	err = json.NewDecoder(resp.Body).Decode(ret)
-	if err != nil {
-		return err
-	}
+	if resp.StatusCode == 201 {
+		ret := new(Ret)
+		err = json.NewDecoder(resp.Body).Decode(ret)
+		if err != nil {
+			return err
+		}
 
-	// TODO: 16/8/22 error handler (message)
-	log.Printf("I! ID: %s\n", ret.Id)
-	log.Printf("I! URL: %s\n", ret.HtmlUrl)
-	log.Printf("I! PUBLIC: %t\n", ret.Public)
+		log.Printf("I! ID: %s\n", ret.Id)
+		log.Printf("I! URL: %s\n", ret.HtmlUrl)
+		log.Printf("I! PUBLIC: %t\n", ret.Public)
+	} else {
+		errRet := new(ErrRet)
+		err = json.NewDecoder(resp.Body).Decode(errRet)
+		if err != nil {
+			return err
+		}
+		log.Printf("E! %s", errRet.Message)
+	}
 
 	return nil
 }

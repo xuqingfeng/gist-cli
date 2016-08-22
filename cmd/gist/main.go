@@ -5,7 +5,12 @@ import (
 	"log"
 	"os"
 
-	"bitbucket.org/jsxqf/gist-cli"
+	"fmt"
+	"github.com/xuqingfeng/gist-cli"
+)
+
+const (
+	VERSION = "0.1.0"
 )
 
 func main() {
@@ -18,7 +23,14 @@ func main() {
 
 	proxyCfg := flag.String("py", "", "(socks5, http, https) proxy")
 
+	version := flag.Bool("v", false, "version")
+
 	flag.Parse()
+
+	if *version {
+		fmt.Printf("%s", VERSION)
+		os.Exit(0)
+	}
 
 	if len(*username) == 0 {
 		*username = os.Getenv(gist.GIST_CLI_USERNAME)
