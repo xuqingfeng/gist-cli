@@ -3,11 +3,11 @@ package gist
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
-	"errors"
 
 	"golang.org/x/net/proxy"
 )
@@ -40,13 +40,21 @@ const (
 )
 
 var (
-	ErrNoFiles = errors.New("no file provided")
+	ErrNoUsername = errors.New("no username provided")
+	ErrNoToken    = errors.New("no token provided")
+	ErrNoFiles    = errors.New("no file provided")
 )
 
 // Paste upload files to github
 // upload empty files will return error
 func Paste(public bool, username, token, description, proxyCfg string, flagArgs []string) error {
 
+	if len(username) == 0 {
+		return ErrNoUsername
+	}
+	if len(token) == 0 {
+		return ErrNoToken
+	}
 	if len(flagArgs) == 0 {
 		return ErrNoFiles
 	}
