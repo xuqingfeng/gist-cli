@@ -7,14 +7,15 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"errors"
 
 	"golang.org/x/net/proxy"
 )
 
 type Data struct {
-	Description string          `json:"description"`
-	Secret      bool            `json:"secret"`
 	Files       map[string]File `json:"files"`
+	Description string          `json:"description"`
+	Public      bool            `json:"public"`
 }
 
 type File struct {
@@ -24,6 +25,7 @@ type File struct {
 type Ret struct {
 	Id          string `json:"id"`
 	Url         string `json:"url"`
+	HtmlUrl     string `json:"html_url"`
 	Description string `json:"description"`
 	Public      bool   `json:"public"`
 }
@@ -37,8 +39,17 @@ const (
 	GIST_CLI_PROXY    = "GIST_CLI_PROXY"
 )
 
+var (
+	ErrNoFiles = errors.New("no file provided")
+)
+
 // Paste upload files to github
-func Paste(secret bool, username, token, description, proxyCfg string, flagArgs []string) error {
+// upload empty files will return error
+func Paste(public bool, username, token, description, proxyCfg string, flagArgs []string) error {
+
+	if len(flagArgs) == 0 {
+		return ErrNoFiles
+	}
 
 	files := make(map[string]File)
 	for _, name := range flagArgs {
@@ -50,9 +61,9 @@ func Paste(secret bool, username, token, description, proxyCfg string, flagArgs 
 	}
 
 	data := Data{
-		description,
-		secret,
 		files,
+		description,
+		public,
 	}
 
 	dataInJson, err := json.Marshal(data)
@@ -95,9 +106,10 @@ func Paste(secret bool, username, token, description, proxyCfg string, flagArgs 
 		return err
 	}
 
+	// TODO: 16/8/22 error handler (message)
 	log.Printf("I! ID: %s\n", ret.Id)
-	log.Printf("I! URL: %s\n", ret.Url)
-	log.Printf("I! SECRET: %t\n", ret.Public)
+	log.Printf("I! URL: %s\n", ret.HtmlUrl)
+	log.Printf("I! PUBLIC: %t\n", ret.Public)
 
 	return nil
 }
