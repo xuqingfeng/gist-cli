@@ -6,16 +6,26 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
+
+	"golang.org/x/net/proxy"
 )
 
 type Data struct {
 	Description string          `json:"description"`
-	Public      bool            `json:"public"`
+	Secret      bool            `json:"secret"`
 	Files       map[string]File `json:"files"`
 }
 
 type File struct {
 	Content string `json:"content"`
+}
+
+type Ret struct {
+	Id          string `json:"id"`
+	Url         string `json:"url"`
+	Description string `json:"description"`
+	Public      bool   `json:"public"`
 }
 
 const (
@@ -24,9 +34,11 @@ const (
 	// ENV
 	GIST_CLI_USERNAME = "GIST_CLI_USERNAME"
 	GIST_CLI_TOKEN    = "GIST_CLI_TOKEN"
+	GIST_CLI_PROXY    = "GIST_CLI_PROXY"
 )
 
-func Paste(private bool, username, token, description string, flagArgs []string) error {
+// Paste upload files to github
+func Paste(secret bool, username, token, description, proxyCfg string, flagArgs []string) error {
 
 	files := make(map[string]File)
 	for _, name := range flagArgs {
@@ -39,7 +51,7 @@ func Paste(private bool, username, token, description string, flagArgs []string)
 
 	data := Data{
 		description,
-		private,
+		secret,
 		files,
 	}
 
@@ -51,6 +63,21 @@ func Paste(private bool, username, token, description string, flagArgs []string)
 	reader := bytes.NewReader(dataInJson)
 
 	defaultClient := &http.Client{}
+
+	// proxy request
+	if len(proxyCfg) != 0 {
+		proxyUrl, err := url.Parse(proxyCfg)
+		if err != nil {
+			return err
+		}
+		dialer, err := proxy.FromURL(proxyUrl, proxy.Direct)
+		if err != nil {
+			return err
+		}
+		transport := &http.Transport{Dial: dialer.Dial}
+		defaultClient.Transport = transport
+	}
+
 	req, err := http.NewRequest("POST", GIST_API_URL, reader)
 	if err != nil {
 		return err
@@ -62,7 +89,15 @@ func Paste(private bool, username, token, description string, flagArgs []string)
 	}
 	defer resp.Body.Close()
 
-	log.Printf("I! create gist success\n")
+	ret := new(Ret)
+	err = json.NewDecoder(resp.Body).Decode(ret)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("I! ID: %s\n", ret.Id)
+	log.Printf("I! URL: %s\n", ret.Url)
+	log.Printf("I! SECRET: %t\n", ret.Public)
 
 	return nil
 }
