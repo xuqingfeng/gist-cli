@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/xuqingfeng/gist-cli"
+	"bitbucket.org/jsxqf/gist-cli"
 )
 
 func main() {
