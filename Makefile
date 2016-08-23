@@ -10,4 +10,4 @@ test:
 	go test ./...
 
 dist:
-	gox -osarch="linux/amd64 darwin/amd64" ./cmd/gist && mv gist_darwin_amd64 ./dist/gist_darwin_amd64 && mv gist_linux_amd64 ./dist/gist_linux_amd64
+	gox -osarch="linux/386 linux/amd64 linux/arm darwin/amd64 windows/386 windows/amd64" ./cmd/gist && mv gist_* ./dist/

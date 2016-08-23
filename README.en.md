@@ -1,4 +1,4 @@
-## gist
+## gist-cli
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/gist-cli?style=flat-square)](https://goreportcard.com/report/github.com/xuqingfeng/gist-cli)
 
@@ -6,9 +6,9 @@
 
 #### Install
 
-`go get -u -v bitbucket.org/jsxqf/gist-cli/cmd/gist`
+`go get -u -v github.com/xuqingfeng/gist-cli/cmd/gist`
 
-OR just download the `gist` binary [here]().
+OR just download the `gist` binary [here](https://github.com/xuqingfeng/gist-cli/releases).
 
 #### Usage
 
@@ -17,11 +17,12 @@ OR just download the `gist` binary [here]().
 OR **use environment variable**
 
 ```
-# ~/.zshrc
+# vi ~/.zshrc
 # gist
 export GIST_CLI_USERNAME="YOUR_USERNAME"
 export GIST_CLI_TOKEN="YOUR_TOKEN"
-export GIST_CLI_PROXY="socks5://localhost:9742"
+export GIST_CLI_PROXY="YOUR_PROXY" # socks5://localhost:9742
+```
 ```
 
 `gist FILE0 FILE1`

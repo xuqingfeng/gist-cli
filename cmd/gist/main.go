@@ -10,7 +10,7 @@ import (
 )
 
 const (
-    // VERSION holds the version number of gist cli
+	// VERSION holds the version number of gist cli
 	VERSION = "0.1.0"
 )
 

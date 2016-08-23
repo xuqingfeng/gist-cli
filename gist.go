@@ -39,7 +39,7 @@ type ErrRet struct {
 }
 
 const (
-    // GIST_API_URL holds github gist api url
+	// GIST_API_URL holds github gist api url
 	GIST_API_URL = "https://api.github.com/gists"
 
 	// ENV
