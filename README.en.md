@@ -2,19 +2,19 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/gist-cli?style=flat-square)](https://goreportcard.com/report/github.com/xuqingfeng/gist-cli)
 
-中文 | [English](./README.en.md)
+[中文](./README.md) | English
 
-#### 安装
+#### Install
 
 `go get -u -v bitbucket.org/jsxqf/gist-cli/cmd/gist`
 
-或者 直接安装[二进制文件]()
+OR just download the `gist` binary [here]().
 
-#### 用法
+#### Usage
 
 `gist -u=YOUR_USERNAME -t=YOUR_TOKEN -d=DESCRIPTION FILE0 FILE1`
 
-或者 **导出环境变量**
+OR **use environment variable**
 
 ```
 # ~/.zshrc
@@ -26,6 +26,6 @@ export GIST_CLI_PROXY="socks5://localhost:9742"
 
 `gist FILE0 FILE1`
 
-##### 其他
+##### Other
 
-`gist -h` 列出所有命令
+`gist -h` to list all commands
