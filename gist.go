@@ -12,16 +12,19 @@ import (
 	"golang.org/x/net/proxy"
 )
 
+// Data holds client post params
 type Data struct {
 	Files       map[string]File `json:"files"`
 	Description string          `json:"description"`
 	Public      bool            `json:"public"`
 }
 
+// File is part of Data
 type File struct {
 	Content string `json:"content"`
 }
 
+// Ret holds github normal return
 type Ret struct {
 	Id          string `json:"id"`
 	Url         string `json:"url"`
@@ -30,11 +33,13 @@ type Ret struct {
 	Public      bool   `json:"public"`
 }
 
+// ErrRet holds github error return
 type ErrRet struct {
 	Message string `json:"message"`
 }
 
 const (
+    // GIST_API_URL holds github gist api url
 	GIST_API_URL = "https://api.github.com/gists"
 
 	// ENV
@@ -129,7 +134,7 @@ func Paste(public bool, username, token, description, proxyCfg string, flagArgs 
 		if err != nil {
 			return err
 		}
-		log.Printf("E! %s", errRet.Message)
+		log.Printf("E! %s\n", errRet.Message)
 	}
 
 	return nil
