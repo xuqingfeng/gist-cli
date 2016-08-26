@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 
@@ -24,7 +24,7 @@ type File struct {
 	Content string `json:"content"`
 }
 
-// Ret holds github normal return
+// Ret holds github success return
 type Ret struct {
 	Id          string `json:"id"`
 	Url         string `json:"url"`
@@ -92,7 +92,7 @@ func Paste(public bool, username, token, description, proxyCfg string, flagArgs 
 
 	defaultClient := &http.Client{}
 
-	// proxy request
+	// https://stackoverflow.com/questions/14661511/setting-up-proxy-for-http-client
 	if len(proxyCfg) != 0 {
 		proxyUrl, err := url.Parse(proxyCfg)
 		if err != nil {
@@ -102,11 +102,11 @@ func Paste(public bool, username, token, description, proxyCfg string, flagArgs 
 		if err != nil {
 			return err
 		}
-		transport := &http.Transport{Dial: dialer.Dial}
-		defaultClient.Transport = transport
-		log.Printf("I! using proxy: %s\n", proxyCfg)
+		defaultClient.Transport = &http.Transport{Dial: dialer.Dial}
+		fmt.Printf("I! using proxy: %s\n", proxyCfg)
 	}
 
+	// golang will use `HTTP_PROXY` & `HTTPS_PROXY` by default.
 	req, err := http.NewRequest("POST", GIST_API_URL, reader)
 	if err != nil {
 		return err
@@ -125,16 +125,17 @@ func Paste(public bool, username, token, description, proxyCfg string, flagArgs 
 			return err
 		}
 
-		log.Printf("I! ID: %s\n", ret.Id)
-		log.Printf("I! URL: %s\n", ret.HtmlUrl)
-		log.Printf("I! PUBLIC: %t\n", ret.Public)
+		fmt.Printf("I! ID: %s\n", ret.Id)
+		fmt.Printf("I! URL: %s\n", ret.HtmlUrl)
+		fmt.Printf("I! PUBLIC: %t\n", ret.Public)
+		fmt.Printf("I! DESCRIPTION: %s\n", ret.Description)
 	} else {
 		errRet := new(ErrRet)
 		err = json.NewDecoder(resp.Body).Decode(errRet)
 		if err != nil {
 			return err
 		}
-		log.Printf("E! %s\n", errRet.Message)
+		fmt.Printf("E! %s\n", errRet.Message)
 	}
 
 	return nil

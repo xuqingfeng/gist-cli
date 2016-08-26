@@ -17,12 +17,11 @@ OR just download the `gist` binary [here](https://github.com/xuqingfeng/gist-cli
 OR **use environment variable**
 
 ```
-# vi ~/.zshrc
+# vi ~/.zshrc (.bashrc ...)
 # gist
 export GIST_CLI_USERNAME="YOUR_USERNAME"
 export GIST_CLI_TOKEN="YOUR_TOKEN"
-export GIST_CLI_PROXY="YOUR_PROXY" # socks5://localhost:9742
-```
+export GIST_CLI_PROXY="YOUR_SOCKS5_PROXY" # socks5://localhost:9742
 ```
 
 `gist FILE0 FILE1`

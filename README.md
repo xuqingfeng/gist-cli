@@ -8,7 +8,7 @@
 
 `go get -u -v github.com/xuqingfeng/gist-cli/cmd/gist`
 
-或者直接安装 [二进制文件](https://github.com/xuqingfeng/gist-cli/releases)
+或者直接下载 [二进制文件](https://github.com/xuqingfeng/gist-cli/releases)
 
 #### 用法
 
@@ -17,11 +17,11 @@
 或者**导出环境变量**
 
 ```
-# vi ~/.zshrc
+# vi ~/.zshrc (.bashrc ...)
 # gist
 export GIST_CLI_USERNAME="YOUR_USERNAME"
 export GIST_CLI_TOKEN="YOUR_TOKEN"
-export GIST_CLI_PROXY="YOUR_PROXY" # socks5://localhost:9742
+export GIST_CLI_PROXY="YOUR_SOCKS5_PROXY" # socks5://localhost:9742
 ```
 
 `gist FILE0 FILE1`

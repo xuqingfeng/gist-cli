@@ -11,7 +11,7 @@ import (
 
 const (
 	// VERSION holds the version number of gist cli
-	VERSION = "0.1.0"
+	VERSION = "0.2.0"
 )
 
 func main() {
@@ -22,14 +22,14 @@ func main() {
 	token := flag.String("t", "", "token for gist (https://github.com/settings/tokens)")
 	description := flag.String("d", "", "description")
 
-	proxyCfg := flag.String("py", "", "(socks5, http, https) proxy")
+	proxyCfg := flag.String("py", "", "(socks5) proxy")
 
 	version := flag.Bool("v", false, "version")
 
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("%s", VERSION)
+		fmt.Printf("%s\n", VERSION)
 		os.Exit(0)
 	}
 
