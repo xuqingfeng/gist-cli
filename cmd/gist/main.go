@@ -2,27 +2,27 @@ package main
 
 import (
 	"flag"
-	"log"
+	"fmt"
 	"os"
 
-	"fmt"
 	"github.com/xuqingfeng/gist-cli"
 )
 
 const (
 	// VERSION holds the version number of gist cli
-	VERSION = "0.2.0"
+	VERSION = "v0.3.0"
 )
 
 func main() {
 
-	// flag has high priority than ENV value
+	anonymous := flag.Bool("a", false, "make anonymous gist")
 	public := flag.Bool("p", false, "make gist public (false) or secret (true) - default secret")
+	// flag has high priority than ENV value
 	username := flag.String("u", "", "username")
 	token := flag.String("t", "", "token for gist (https://github.com/settings/tokens)")
-	description := flag.String("d", "", "description")
-
 	proxyCfg := flag.String("py", "", "(socks5) proxy")
+
+	description := flag.String("d", "", "description")
 
 	version := flag.Bool("v", false, "version")
 
@@ -43,8 +43,9 @@ func main() {
 		*proxyCfg = os.Getenv(gist.GIST_CLI_PROXY)
 	}
 
-	err := gist.Paste(*public, *username, *token, *description, *proxyCfg, flag.Args())
+	err := gist.Paste(*anonymous, *public, *username, *token, *description, *proxyCfg, flag.Args())
 	if err != nil {
-		log.Fatalf("E! %v\n", err)
+		fmt.Printf("E! %v\n", err)
+		os.Exit(1)
 	}
 }

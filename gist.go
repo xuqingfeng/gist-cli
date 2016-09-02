@@ -56,16 +56,18 @@ var (
 
 // Paste is used to upload files to gist.github.com
 // upload empty files will return error
-func Paste(public bool, username, token, description, proxyCfg string, flagArgs []string) error {
+func Paste(anonymous, public bool, username, token, description, proxyCfg string, flagArgs []string) error {
 
-	if len(username) == 0 {
-		return ErrNoUsername
-	}
-	if len(token) == 0 {
-		return ErrNoToken
-	}
-	if len(flagArgs) == 0 {
-		return ErrNoFiles
+	if !anonymous {
+		if len(username) == 0 {
+			return ErrNoUsername
+		}
+		if len(token) == 0 {
+			return ErrNoToken
+		}
+		if len(flagArgs) == 0 {
+			return ErrNoFiles
+		}
 	}
 
 	files := make(map[string]File)
@@ -111,7 +113,9 @@ func Paste(public bool, username, token, description, proxyCfg string, flagArgs 
 	if err != nil {
 		return err
 	}
-	req.SetBasicAuth(username, token)
+	if !anonymous {
+		req.SetBasicAuth(username, token)
+	}
 	resp, err := defaultClient.Do(req)
 	if err != nil {
 		return err
