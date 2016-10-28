@@ -28,4 +28,19 @@ export GIST_CLI_PROXY="YOUR_SOCKS5_PROXY" # socks5://localhost:9742
 
 ##### Other
 
-`gist -h` to list all commands
+```
+gist -h
+
+Usage of gist:
+  -a	make anonymous gist
+  -d string
+    	description
+  -p	make gist public (false) or secret (true) - default secret
+  -py string
+    	(socks5) proxy
+  -t string
+    	token for gist (https://github.com/settings/tokens)
+  -u string
+    	username
+  -v	version
+```
